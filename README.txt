@@ -1,0 +1,1 @@
+This repo consists of my attempt at creating an end-to-end ML pipeline that ingests data, processes it, trains on it, and give us a prediction engine to predict if a given transaction is fraudulent or not in a fintech environment.

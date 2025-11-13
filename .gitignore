@@ -1,0 +1,6 @@
+# Ignore large CSV
+/Data/Creditcard Kaggle Dataset/creditcard.csv
+# Ignore Python cache and environments
+__pycache__/
+venv/
+*.pyc
