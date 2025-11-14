@@ -6,7 +6,7 @@ All rights to the original dataset belong to the respective author(s) and Kaggle
 
 Dataset Overview
 - Rows: 284,807  
-- Features: 30 (including Time, Amount, and V1–V28)  
+- Features: 31 (including Time, Amount, Class and V1–V28)  
 - Target: Class (1 = Fraud, 0 = Non-Fraud)  
 - Notes: The features V1–V28 are anonymized using PCA to protect sensitive information.
 

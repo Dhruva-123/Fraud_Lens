@@ -1,5 +1,6 @@
 # Ignore large CSV
 /Data/Creditcard Kaggle Dataset/creditcard.csv
+/EDA/EDASteps.docx
 # Ignore Python cache and environments
 __pycache__/
 venv/
