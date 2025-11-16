@@ -1,0 +1,3 @@
+Our dataset consists of PCA-generated features (V1–V28) along with Amount, Time, and Class. The correlation analysis shows that these components do not exhibit meaningful linear relationships with each other, implying that each feature contributes independently to the representation of a transaction. Since the dataset is already PCA-compressed, additional dimensionality reduction is unnecessary.
+
+Even though the data contains labels (Class = 0/1), we apply unsupervised learning to evaluate how well fraud patterns naturally separate from non-fraud patterns without supervision. This mirrors real-world situations where labels are sparse, unreliable, or entirely missing.
