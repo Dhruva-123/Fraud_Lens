@@ -6,9 +6,9 @@ from sklearn.pipeline import make_pipeline
 from sqlalchemy import create_engine
 from urllib.parse import quote_plus
 
-username = "root"
-password = "Rahuldhruva@123"
-host = "localhost"
+username = "username"
+password = "password"
+host = "local or IP"
 port = 3306
 name_of_DB = "FraudLens"
 encoded_pass = quote_plus(password)
