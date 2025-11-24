@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-
+import joblib
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
 username = "username"
 password = "password"
@@ -46,6 +46,7 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 svm_model = SVC(kernel="linear", class_weight="balanced", probability=True)
 svm_model.fit(X_train_scaled, y_train)
+joblib.dump(svm_model, r"D:\AI\fraudlens\FraudLens\API\Models\SVC.pkl")
 ### Getting predictions
 y_scores = svm_model.predict_proba(X_test_scaled)[:, 1]
 

@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-
+import joblib
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
 username = "username"
 password = "password"
@@ -46,7 +46,7 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 lr = LogisticRegression(class_weight="balanced", max_iter=500)
 lr.fit(X_train_scaled, y_train)
-
+joblib.dump(lr, r"D:\AI\fraudlens\FraudLens\API\Models\LogisiticRegression.pkl")
 ### Getting predictions
 y_scores = lr.predict_proba(X_test_scaled)[:,1]
 

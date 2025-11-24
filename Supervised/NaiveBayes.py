@@ -5,11 +5,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-
+import joblib
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
 username = "username"
 password = "password"
-host = "local or IP"
+host = "local or IP" 
 port = 3306
 name_of_DB = "FraudLens"
 
@@ -46,6 +46,8 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 naive_bayes = GaussianNB()
 naive_bayes.fit(X_train_scaled, y_train)
+joblib.dump(naive_bayes, r"D:\AI\fraudlens\FraudLens\API\Models\NaiveBayes.pkl")
+
 ### Getting predictions
 y_scores = naive_bayes.predict_proba(X_test_scaled)[:, 1]
 
