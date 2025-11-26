@@ -1,0 +1,1 @@
+from .input import take_input as input_
