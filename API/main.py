@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-
 from Routers.health import health_router
 from Schemas.input import input_router
 from Routers.predict import predict_router, load_model, ALLOWED_MODELS
