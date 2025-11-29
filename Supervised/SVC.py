@@ -5,11 +5,11 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-import joblib
+import cloudpickle
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
-username = "username"
-password = "password"
-host = "local or IP"
+username = "root"
+password = "Rahuldhruva@123"
+host = "localhost"
 port = 3306
 name_of_DB = "FraudLens"
 
@@ -46,7 +46,6 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 svm_model = SVC(kernel="linear", class_weight="balanced", probability=True)
 svm_model.fit(X_train_scaled, y_train)
-joblib.dump(svm_model, r"D:\AI\fraudlens\FraudLens\API\Models\SVC.pkl")
 ### Getting predictions
 y_scores = svm_model.predict_proba(X_test_scaled)[:, 1]
 
@@ -61,6 +60,19 @@ y_pred = (y_scores >= best_threshold).astype(int)
 print(f"Best threshold for fraud detection: {best_threshold:.4f}")
 print(f"PR-AUC: {average_precision_score(y_test, y_scores):.4f}")
 print(classification_report(y_test, y_pred, digits=4))
+
+model_path = r"D:\AI\fraudlens\FraudLens\API\SVC.pkl"
+
+with open(model_path, "wb") as f:
+    cloudpickle.dump(svm_model , f)
+    f.flush()   # force flush to disk
+
+
+with open(model_path, "rb") as f:
+    loaded_model = cloudpickle.load(f)
+
+print(hasattr(loaded_model, "coef_"))   # Should be True
+print(loaded_model.coef_.shape)         # Should be (1, 30)
 
 ### This is the result we got
 '''

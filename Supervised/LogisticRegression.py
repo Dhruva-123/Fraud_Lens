@@ -5,11 +5,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-import joblib
+import cloudpickle
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
-username = "username"
-password = "password"
-host = "local or IP"
+username = "root"
+password = "Rahuldhruva@123"
+host = "localhost"
 port = 3306
 name_of_DB = "FraudLens"
 
@@ -46,7 +46,7 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 lr = LogisticRegression(class_weight="balanced", max_iter=500)
 lr.fit(X_train_scaled, y_train)
-joblib.dump(lr, r"D:\AI\fraudlens\FraudLens\API\Models\LogisiticRegression.pkl")
+model = lr
 ### Getting predictions
 y_scores = lr.predict_proba(X_test_scaled)[:,1]
 
@@ -61,6 +61,17 @@ y_pred = (y_scores >= best_threshold).astype(int)
 print(f"Best threshold for fraud detection: {best_threshold:.4f}")
 print(f"PR-AUC: {average_precision_score(y_test, y_scores):.4f}")
 print(classification_report(y_test, y_pred, digits=4))
+print(lr)                # should show fitted LogisticRegression object
+print(hasattr(lr, 'coef_'))  # should be True
+print(lr.coef_.shape)    # should show correct dimensions
+
+
+model_path = r"D:\AI\fraudlens\FraudLens\API\Models\LogisticRegression.pkl"
+
+with open(model_path, "wb") as f:
+    cloudpickle.dump(lr, f)
+    f.flush()   # force flush to disk
+
 
 #### The result we got.
 '''

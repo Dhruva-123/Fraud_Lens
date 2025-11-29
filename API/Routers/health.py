@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import APIRouter
 
-router = FastAPI()
+health_router = APIRouter()
 
-@router.get("/health")
+@health_router.get("/health")
 def router():
     return {
         "Service":"FraudLens",

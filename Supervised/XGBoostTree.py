@@ -5,11 +5,11 @@ from xgboost import XGBClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-import joblib
+import pickle
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
-username = "username"
-password = "password"
-host = "local or IP"
+username = "root"
+password = "Rahuldhruva@123"
+host = "localhost"
 port = 3306
 name_of_DB = "FraudLens"
 
@@ -46,7 +46,7 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 tree = XGBClassifier(n_estimators=300, max_depth = 6, learning_rate= 0.05, subsample = 0.9, colsample_bytree = 0.8, scale_pos_weight = 10, eval_metric = "logloss", use_label_encoder = False)
 tree.fit(X_train_scaled, y_train)
-joblib.dump(tree, r"D:\AI\fraudlens\FraudLens\API\Models\XGBoostTree.pkl")
+#joblib.dump(tree, r"D:\AI\fraudlens\FraudLens\API\Models\XGBoostTree.pkl")
 ### Getting predictions
 y_scores = tree.predict_proba(X_test_scaled)[:, 1]
 
@@ -57,6 +57,15 @@ best_idx = np.argmax(f1_scores)
 best_threshold = thresholds[best_idx]
 y_pred = (y_scores >= best_threshold).astype(int)
 
+
+# Fit scaler on your training data
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Save it
+scaler_path = r"D:\AI\fraudlens\FraudLens\API\Models\scaler.pkl"
+with open(scaler_path, "wb") as f:
+    pickle.dump(scaler, f)
 
 print(f"Best threshold for fraud detection: {best_threshold:.4f}")
 print(f"PR-AUC: {average_precision_score(y_test, y_scores):.4f}")

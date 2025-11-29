@@ -5,11 +5,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, precision_recall_curve, average_precision_score
 import numpy as np
-import joblib
+import cloudpickle
 ### In this section, we will be grabbing data from the SQL table. Nothing new here, we have seen this exact thing in other files as well.
-username = "username"
-password = "password"
-host = "local or IP" 
+username = "root"
+password = "Rahuldhruva@123"
+host = "localhost" 
 port = 3306
 name_of_DB = "FraudLens"
 
@@ -46,7 +46,6 @@ X_test_scaled = scaler.transform(X_test)
 ### Actual training of the model
 naive_bayes = GaussianNB()
 naive_bayes.fit(X_train_scaled, y_train)
-joblib.dump(naive_bayes, r"D:\AI\fraudlens\FraudLens\API\Models\NaiveBayes.pkl")
 
 ### Getting predictions
 y_scores = naive_bayes.predict_proba(X_test_scaled)[:, 1]
@@ -62,6 +61,26 @@ y_pred = (y_scores >= best_threshold).astype(int)
 print(f"Best threshold for fraud detection: {best_threshold:.4f}")
 print(f"PR-AUC: {average_precision_score(y_test, y_scores):.4f}")
 print(classification_report(y_test, y_pred, digits=4))
+
+model_path = r"D:\AI\fraudlens\FraudLens\API\Models\Naive_bayes.pkl"
+
+with open(model_path, "wb") as f:
+    cloudpickle.dump(naive_bayes , f)
+    f.flush()   # force flush to disk
+
+
+with open(model_path, "rb") as f:
+    loaded_model = cloudpickle.load(f)
+
+if hasattr(loaded_model, "classes_"):
+    print("Model is fitted")
+    print("Classes:", loaded_model.classes_)
+    
+    if isinstance(loaded_model, GaussianNB):
+        print("Theta (mean per class):", loaded_model.theta_)
+        print("Sigma (variance per class):", loaded_model.sigma_)
+else:
+    print("Model is NOT fitted")
 
 ### This is the result we got
 '''

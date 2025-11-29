@@ -8,7 +8,7 @@ from typing import Literal
 from Schemas.input import Input
 from Utils.preprocess import preprocess_data
 
-router = APIRouter()
+predict_router = APIRouter()
 
 # Dictionary to hold the loaded models in memory (caching)
 models_cache = {}
@@ -18,7 +18,7 @@ MODEL_DIR = "./Models"
 # List of model filenames (without .pkl extension) you expect to find
 # These models must be classification models trained on the fraud dataset
 ALLOWED_MODELS = [
-    "LogisitcRegression", 
+    "LogisticRegression", 
     "NaiveBayes", 
     "SVC", 
     "XGBoostTree"
@@ -62,7 +62,7 @@ def load_model(model_name: str):
         print(f"Error loading model {model_name}: {e}")
         raise RuntimeError(f"Error loading model {model_name}. Check the .pkl file integrity.")
 
-@router.post("/predict/{model_name}", response_model=PredictionResponse, status_code=200)
+@predict_router.post("/predict/{model_name}", response_model=PredictionResponse, status_code=200)
 def get_prediction(model_name: str, request_data: Input):
     """
     Accepts transaction features, preprocesses them, and returns a fraud classification 

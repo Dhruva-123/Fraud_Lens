@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Literal
-from fastapi import FastAPI, Path 
+from fastapi import APIRouter, Path 
 
 class Input(BaseModel):
     Model: str
@@ -35,12 +35,12 @@ class Input(BaseModel):
     v28 : float
     Amount : float
 
-router = FastAPI()
+input_router = APIRouter()
 
 inputs = []
 count = 0
 
-@router.post("/input")
+@input_router.post("/input")
 def take_input(input : Input):
     inputs.append({count : input})
     index = count
